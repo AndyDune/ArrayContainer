@@ -13,6 +13,7 @@
 
 namespace AndyDuneTest\ArrayContainer;
 
+use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
@@ -67,7 +68,18 @@ class ArrayContainerTest extends TestCase
         $this->assertFalse($container->has('a'));
         $this->assertFalse($container->has('c'));
         $this->assertTrue($container->has('b'));
+    }
 
+    public function testActionKeysAddIfNoExist()
+    {
+        $container = new ArrayContainer();
+        $this->assertEquals(null, $container['a']);
+        $this->assertEquals(null, $container['c']);
+
+        $container->setAction(new KeysAddIfNoExist(1))->executeAction('a', 'c');
+        $this->assertEquals(1, $container['a']);
+        $this->assertEquals(1, $container['c']);
+        $this->assertEquals(null, $container['b']);
 
     }
 }

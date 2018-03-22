@@ -13,6 +13,7 @@
 
 namespace AndyDuneTest\ArrayContainer;
 
+use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
 
@@ -44,5 +45,29 @@ class ArrayContainerTest extends TestCase
             return strtolower($value);
         });
         $this->assertEquals('b', $array['a']);
+    }
+
+    public function testActionKeysLeave()
+    {
+        $arraySource = ['a' => 1, 'b' => 2, 'c' => 3];
+        $container = new ArrayContainer($arraySource);
+        $container->setAction(new KeysLeave())->executeAction('a', 'c');
+        $this->assertTrue($container->has('a'));
+        $this->assertTrue($container->has('c'));
+        $this->assertFalse($container->has('b'));
+
+        $container = new ArrayContainer($arraySource);
+        $container->setAction(new KeysLeave())->executeAction(['a', 'c']);
+        $this->assertTrue($container->has('a'));
+        $this->assertTrue($container->has('c'));
+        $this->assertFalse($container->has('b'));
+
+        $container = new ArrayContainer($arraySource);
+        $container->setAction(new KeysLeave())->executeAction('b');
+        $this->assertFalse($container->has('a'));
+        $this->assertFalse($container->has('c'));
+        $this->assertTrue($container->has('b'));
+
+
     }
 }

@@ -14,12 +14,19 @@
 namespace AndyDune\ArrayContainer;
 
 
+use AndyDune\ArrayContainer\Action\AbstractAction;
+
 class ArrayContainer implements \ArrayAccess
 {
     protected $array = [];
     protected $defaultValue = null;
 
     protected $filters = [];
+
+    /**
+     * @var null|AbstractAction
+     */
+    protected $action = null;
 
     public function __construct($array = [])
     {
@@ -29,6 +36,28 @@ class ArrayContainer implements \ArrayAccess
     public function setDefaultValue($value)
     {
         $this->defaultValue = $value;
+    }
+
+    public function setAction(AbstractAction $action)
+    {
+        $this->action = $action;
+        $this->action->setArrayContainer($this);
+        return $this;
+    }
+
+    public function executeAction(...$params)
+    {
+        return $this->action->execute(...$params);
+    }
+
+    public function getArrayCopy()
+    {
+        return $this->array;
+    }
+
+    public function setArray($array)
+    {
+        $this->array = $array;
     }
 
     public function addFilter($filter)
@@ -55,6 +84,11 @@ class ArrayContainer implements \ArrayAccess
             $data = $data[$key];
         }
         return $data;
+    }
+
+    public function has($offset)
+    {
+        return array_key_exists($offset, $this->array);
     }
 
     public function get($offset)

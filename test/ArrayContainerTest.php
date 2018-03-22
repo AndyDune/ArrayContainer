@@ -25,5 +25,15 @@ class ArrayContainerTest extends TestCase
         $array->setDefaultValue('NO');
         $this->assertEquals('NO', $array['tt']);
         $this->assertEquals('NO', $array->get('tt'));
+
+        $array['tt'] = 'YES';
+        $this->assertEquals('YES', $array['tt']);
+        $this->assertEquals('YES', $array->get('tt'));
+
+        $array->set('tt', 'Y');
+        $this->assertEquals('Y', $array['tt']);
+        $this->assertEquals('Y', $array->get('tt'));
+
+
     }
 }

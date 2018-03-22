@@ -19,6 +19,8 @@ class ArrayContainer implements \ArrayAccess
     protected $array = [];
     protected $defaultValue = null;
 
+    protected $filters = [];
+
     public function __construct($array = [])
     {
         $this->array = $array;
@@ -27,6 +29,11 @@ class ArrayContainer implements \ArrayAccess
     public function setDefaultValue($value)
     {
         $this->defaultValue = $value;
+    }
+
+    public function addFilter($filter)
+    {
+        $this->filters[] = $filter;
     }
 
     /**
@@ -72,6 +79,9 @@ class ArrayContainer implements \ArrayAccess
      */
     protected function applyFilters($value)
     {
+        foreach ($this->filters as $filter) {
+            $value = $filter($value);
+        }
         return $value;
     }
 

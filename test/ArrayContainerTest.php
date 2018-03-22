@@ -12,6 +12,7 @@
 
 
 namespace AndyDuneTest\ArrayContainer;
+
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,15 @@ class ArrayContainerTest extends TestCase
         $array->set('tt', 'Y');
         $this->assertEquals('Y', $array['tt']);
         $this->assertEquals('Y', $array->get('tt'));
+    }
 
-
+    public function testFilterCallback()
+    {
+        $array = new ArrayContainer(['a' => 'B']);
+        $this->assertEquals('B', $array['a']);
+        $array->addFilter(function ($value) {
+            return strtolower($value);
+        });
+        $this->assertEquals('b', $array['a']);
     }
 }

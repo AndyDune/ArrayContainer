@@ -58,6 +58,12 @@ class ArrayContainer implements \ArrayAccess
         return $this->defaultValue;
     }
 
+    public function set($offset, $value)
+    {
+        $this->array[$offset] = $value;
+        return $this;
+    }
+
     /**
      * @todo in the making
      *

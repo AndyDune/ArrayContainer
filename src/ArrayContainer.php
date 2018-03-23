@@ -94,7 +94,7 @@ class ArrayContainer implements \ArrayAccess
     public function get($offset)
     {
         if (array_key_exists($offset, $this->array)) {
-            return $this->applyFilters($this->array[$offset]);
+            return $this->applyFilters($this->array[$offset], $offset);
         }
         return $this->defaultValue;
     }
@@ -106,15 +106,16 @@ class ArrayContainer implements \ArrayAccess
     }
 
     /**
-     * @todo in the making
+     * It applies filter function to requested value of array.
      *
      * @param $value
+     * @param $key
      * @return mixed
      */
-    protected function applyFilters($value)
+    protected function applyFilters($value, $key)
     {
         foreach ($this->filters as $filter) {
-            $value = $filter($value);
+            $value = $filter($value, $key);
         }
         return $value;
     }

@@ -46,6 +46,20 @@ class ArrayContainerTest extends TestCase
             return strtolower($value);
         });
         $this->assertEquals('b', $array['a']);
+
+
+        $keyToDo = 'a';
+        $array = new ArrayContainer(['a' => 'B', 'f' => 'Z']);
+        $this->assertEquals('B', $array['a']);
+        $array->addFilter(function ($value, $key) use ($keyToDo) {
+            if ($keyToDo == $key) {
+                return strtolower($value);
+            }
+            return $value;
+        });
+        $this->assertEquals('b', $array['a']);
+        $this->assertEquals('Z', $array['f']);
+
     }
 
     public function testActionKeysLeave()

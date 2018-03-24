@@ -6,4 +6,71 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/andydune/array-container.svg?style=flat-square)](https://packagist.org/packages/andydune/array-container)
 
 
-It offers convenien inteface for incapsulated array. Implaments strategy template for any number of filters.
+It offers convenient interface for incapsulated array. Implaments strategy template for any number of filters.
+
+
+Installation
+------------
+
+Installation using composer:
+
+```
+composer require andydune/array-container
+```
+Or if composer didn't install globally:
+```
+php composer.phar require andydune/array-container
+```
+Or edit your `composer.json`:
+```
+"require" : {
+     "andydune/array-container": "^1"
+}
+
+```
+And execute command:
+```
+php composer.phar update
+```
+
+
+Simple access to array
+------------
+
+You do not need to worry about existence any key.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+
+$aray = new ArrayContainer(['pipe' => 'handemade', 'pipes_type' => ['lovat', 'canadian']]);
+$array['pipe'] // value is 'handemade' 
+$array['tobacco'] // value is null
+$array->getNested('pipes_type.0')  // value is 'lovat'
+$array->getNested('pipes_type:0', null, ':')  // value is 'lovat'
+$array->getNested('some.some', 'NO')  // value is 'NO'
+
+// Set default value
+$array->setDefaultValue('NO');
+$array['tobacco'] // value is 'NO'
+```
+
+Filters
+------------
+
+Filters is callable objects. Filters uses during request properties with getters.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+$aray = new ArrayContainer(['pipe' => 'handemade', 'pipes_type' => ['lovat', 'canadian']]);
+$array->addFilter(function ($value) {
+    return strtoupper($value);
+});
+$array['pipe'] // value is 'HANDEMADE'
+
+```
+
+Modifiers
+------------
+
+Modifier is a object of class witch implements AndyDune\ArrayContainer\Action\AbstractAction interface. 
+It simple can be simple extented without modification main class. 

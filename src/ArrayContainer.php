@@ -33,11 +33,25 @@ class ArrayContainer implements \ArrayAccess
         $this->array = $array;
     }
 
+    /**
+     * Set value to return if no key exist within source array.
+     *
+     * @param mixed $value
+     * @return $this
+     */
     public function setDefaultValue($value)
     {
         $this->defaultValue = $value;
+        return $this;
     }
 
+    /**
+     * Set strategy pattern action for modification array.
+     * Action callable object resieves whole array in container and return array ro replace.
+     *
+     * @param AbstractAction $action
+     * @return $this
+     */
     public function setAction(AbstractAction $action)
     {
         $this->action = $action;
@@ -45,6 +59,10 @@ class ArrayContainer implements \ArrayAccess
         return $this;
     }
 
+    /**
+     * @param array ...$params
+     * @return mixed
+     */
     public function executeAction(...$params)
     {
         return $this->action->execute(...$params);
@@ -55,14 +73,27 @@ class ArrayContainer implements \ArrayAccess
         return $this->array;
     }
 
+    /**
+     * @param $array
+     * @return $this
+     */
     public function setArray($array)
     {
         $this->array = $array;
+        return $this;
     }
 
+    /**
+     * Add filter.
+     * There are may be several filters.
+     *
+     * @param $filter
+     * @return $this
+     */
     public function addFilter($filter)
     {
         $this->filters[] = $filter;
+        return $this;
     }
 
     /**

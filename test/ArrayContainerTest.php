@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * PHP version 7.X
+ * PHP version >= 7.1
  *
  * @package andydune/array-container
  * @link  https://github.com/AndyDune/ArrayContainer for the canonical source repository
@@ -15,6 +15,7 @@ namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
+use AndyDune\ArrayContainer\Action\KeysToLower;
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
 
@@ -94,6 +95,25 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals(1, $container['a']);
         $this->assertEquals(1, $container['c']);
         $this->assertEquals(null, $container['b']);
+    }
+
+    public function testKeysToLower()
+    {
+        $container = new ArrayContainer(['one' => 'low', 'ONE' => 'high']);
+        $this->assertEquals('low', $container['one']);
+        $this->assertEquals('high', $container['ONE']);
+
+        $container->setAction(new KeysToLower())->executeAction();
+        $this->assertEquals('high', $container['one']);
+        $this->assertEquals(null, $container['ONE']);
+
+
+        $container = new ArrayContainer(['ONE' => 'high', 'one' => 'low']);
+        $container->setAction(new KeysToLower())->executeAction();
+        $this->assertEquals('low', $container['one']);
+        $this->assertEquals(null, $container['ONE']);
 
     }
+
+
 }

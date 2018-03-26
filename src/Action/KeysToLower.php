@@ -3,6 +3,15 @@
  *
  * PHP version >= 7.1
  *
+ * Array ['one' => 'low', 'ONE' => 'high']
+ * result to
+ * ['one' => 'high']
+ *
+ * Array ['ONE' => 'high', 'one' => 'low']
+ * result to
+ * ['one' => 'low']
+ *
+ *
  * @package andydune/array-container
  * @link  https://github.com/AndyDune/ArrayContainer for the canonical source repository
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -14,22 +23,16 @@
 namespace AndyDune\ArrayContainer\Action;
 
 
-class KeysLeave extends AbstractAction
+class KeysToLower extends AbstractAction
 {
     public function execute(...$params)
     {
-        $param1 = $params[0] ?? [];
-        if (is_array($param1)) {
-            $params = $param1;
-        }
         $arrayCopy = $this->arrayContainer->getArrayCopy();
-        $this->arrayContainer->setArray(
-        array_filter($arrayCopy, function ($key) use ($params) {
-            if (in_array($key, $params)) {
-                return true;
-            }
-            return false;
-        }, ARRAY_FILTER_USE_KEY));
-
+        $result = [];
+        foreach($arrayCopy as $key => $value) {
+            $key = strtolower($key);
+            $result[$key] = $value;
+        }
+        $this->arrayContainer->setArray($result);
     }
 }

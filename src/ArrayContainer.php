@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * PHP version 7.X
+ * PHP version >= 7.1
  *
  * @package andydune/array-container
  * @link  https://github.com/AndyDune/ArrayContainer for the canonical source repository

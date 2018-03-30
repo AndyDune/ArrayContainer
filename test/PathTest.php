@@ -25,6 +25,8 @@ class PathTest extends TestCase
 
         $pathObject->one->two->three->down = 'four';
 
+        $this->assertEquals('four', (string)$pathObject->one->two->three->down);
+
         $this->assertEquals(['one' => ['two' => ['three' => [0 => 'four', 'down' => 'four']]]], $pathObject->getValue());
     }
 

@@ -56,4 +56,12 @@ class Path
         return $this->value;
     }
 
+    public function __toString()
+    {
+        if (is_array($this->value)) {
+            return json_encode($this->value, JSON_UNESCAPED_UNICODE);
+        }
+        return (string)$this->value;
+    }
+
 }

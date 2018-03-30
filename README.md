@@ -74,3 +74,37 @@ Modifiers
 
 Modifier is a object of class witch implements AndyDune\ArrayContainer\Action\AbstractAction interface. 
 It simple can be simple extented without modification main class. 
+
+Access array with path notation
+------------
+
+Access to array value (more if array is nested) may require validation and check. Path helps make it easily.
+
+```php
+use AndyDune\ArrayContainer\Path;
+$arr = [
+'key1' => 'bum',
+'key2' => ['key21' => [
+    'key211' => 'mub'
+]],
+];
+
+// To get value with key `key211` you need:
+$arr['key2']['key21']['key211'] // mub
+// with Path 
+$arrObject = new Path($arr);
+(string)$arr->key2->key21->key211; // mub
+
+```
+
+Set value inside bested array:
+
+```php
+use AndyDune\ArrayContainer\Path;
+$arrObject = new Path($arr);
+$arr->key2->key21->key211 = 'bum';
+ 
+$arr->key2->key21->key211->getValue(); // 'bum'
+$arr->key2->key21->noExist_id->getValue(); // null
+
+```

@@ -104,7 +104,7 @@ use AndyDune\ArrayContainer\Path;
 $arrObject = new Path($arr);
 $arr->key2->key21->key211 = 'bum';
  
-$arr->key2->key21->key211->getValue(); // 'bum'
+(string)$arr->key2->key21->key211; // 'bum'
 $arr->key2->key21->noExist_id->getValue(); // null
 
 ```

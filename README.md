@@ -1,6 +1,6 @@
 # ArrayContainer
 
-[![Build Status](https://travis-ci.org/AndyDune/ArrayContainer.svg?branch=master)](https://travis-ci.org/AndyDune/ConditionalExecution)
+[![Build Status](https://travis-ci.org/AndyDune/ArrayContainer.svg?branch=master)](https://travis-ci.org/AndyDune/ArrayContainer)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Packagist Version](https://img.shields.io/packagist/v/andydune/array-container.svg?style=flat-square)](https://packagist.org/packages/andydune/array-container)
 [![Total Downloads](https://img.shields.io/packagist/dt/andydune/array-container.svg?style=flat-square)](https://packagist.org/packages/andydune/array-container)
@@ -74,6 +74,39 @@ Modifiers
 
 Modifier is a object of class witch implements AndyDune\ArrayContainer\Action\AbstractAction interface. 
 It simple can be simple extented without modification main class. 
+
+### Add keys to array if not exist.
+
+There is source array:
+
+```php
+$array = [
+    'type' => 'good'
+];
+```
+
+You need to use it into model. Model wait array with keys: *type*, *key* and *value* 
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
+$container = new ArrayContainer();
+
+$defaultValue = 0; // Set this value if array key does not exist.
+
+$container->setAction(new KeysAddIfNoExist($defaultValue))->executeAction('type', 'key', 'value');
+$resultArray = $container->getArrayCopy();
+```
+
+Result array is:
+```php
+$resultArray = [
+    'type' => 'good',
+    'key' => 0,
+    'value' => 0
+];
+```
+
 
 Access array with path notation
 ------------

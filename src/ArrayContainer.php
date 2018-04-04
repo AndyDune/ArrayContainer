@@ -68,6 +68,11 @@ class ArrayContainer implements \ArrayAccess
         return $this->action->execute(...$params);
     }
 
+    /**
+     * Returns encapsulated array.
+     *
+     * @return array
+     */
     public function getArrayCopy()
     {
         return $this->array;

@@ -130,7 +130,7 @@ $arrObject = new Path($arr);
 
 ```
 
-Set value inside bested array:
+Set value inside nested array:
 
 ```php
 use AndyDune\ArrayContainer\Path;

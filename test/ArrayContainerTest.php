@@ -13,6 +13,7 @@
 
 namespace AndyDuneTest\ArrayContainer;
 
+use AndyDune\ArrayContainer\Action\ArrayShift;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\Action\KeysToLower;
@@ -113,6 +114,30 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals('low', $container['one']);
         $this->assertEquals(null, $container['ONE']);
 
+    }
+
+    public function testShiftArray()
+    {
+        $arraySource = [
+            40 => 'fourty',
+            50 => 'figty',
+            60 => 'sixty',
+        ];
+        $container = new ArrayContainer($arraySource);
+
+        // how it works
+        $result = array_shift($arraySource);
+        $this->assertEquals('fourty', $result);
+        $this->assertArrayNotHasKey(40, $arraySource);
+        $this->assertArrayNotHasKey(50, $arraySource);
+
+        $result = $container->setAction(new ArrayShift())->executeAction();
+        $this->assertEquals([40 => 'fourty'], $result);
+
+        $arrayInContainer =  $container->getArrayCopy();
+        $this->assertCount(2, $arrayInContainer);
+        $this->assertArrayHasKey(50, $arrayInContainer);
+        $this->assertArrayHasKey(60, $arrayInContainer);
     }
 
 

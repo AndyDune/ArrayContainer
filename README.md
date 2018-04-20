@@ -107,6 +107,55 @@ $resultArray = [
 ];
 ```
 
+### Array shift maintaining key to data correlations.
+
+There is source array with numeric keys.
+```php
+$arraySource = [
+    40 => 'fourty',
+    50 => 'figty',
+    60 => 'sixty',
+];
+```
+
+After execution function `array_shift` keys will be lost.
+```php
+array_shift($arraySource);
+$arraySource = [
+    0 => 'figty',
+    1 => 'sixty',
+];
+```
+
+Array container action helps to avoid it.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\ArrayShift;
+
+$arraySource = [
+    40 => 'fourty',
+    50 => 'figty',
+    60 => 'sixty',
+];
+
+$container = new ArrayContainer($arraySource);
+
+$result = $container->setAction(new ArrayShift())->executeAction();
+
+$result == [40 => 'fourty'];
+
+$resultArray =  $container->getArrayCopy();
+```
+
+Result array is: 
+
+```php
+[
+    50 => 'figty',
+    60 => 'sixty',
+];
+```
 
 Access array with path notation
 ------------

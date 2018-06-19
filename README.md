@@ -6,7 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/andydune/array-container.svg?style=flat-square)](https://packagist.org/packages/andydune/array-container)
 
 
-It offers convenient interface for incapsulated array. Implaments strategy template for any number of filters.
+It offers convenient interface for incapsulated array. Implements strategy template for any number of filters.
 
 
 Installation
@@ -17,7 +17,7 @@ Installation using composer:
 ```
 composer require andydune/array-container
 ```
-Or if composer didn't install globally:
+Or if composer was not installed globally:
 ```
 php composer.phar require andydune/array-container
 ```

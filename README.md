@@ -6,8 +6,13 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/andydune/array-container.svg?style=flat-square)](https://packagist.org/packages/andydune/array-container)
 
 
-It offers convenient interface for incapsulated array. Implements strategy template for any number of filters.
+It offers convenient interface for encapsulated array. Implements strategy template for any number of filters.
 
+Requirements
+------------
+
+- PHP version >= 7.1
+- Sting "It's probably me" inside your headphones.
 
 Installation
 ------------
@@ -155,6 +160,33 @@ Result array is:
     50 => 'figty',
     60 => 'sixty',
 ];
+```
+
+### Add value to nested array
+
+We have array structure of witch we don't know. Need to set value to it's nested value with check of existence of nested structure. 
+It changes only given array keys.
+
+```php
+// Sourse array:
+$array = [
+    'a' => 1,
+    'b' => [
+        'c' => 2
+    ]
+];
+$container->setAction(new SetValueIntoNestedArray(22))->executeAction('b', 'cc');
+$arrayResult = $container->getArrayCopy();
+
+// Result array is:
+$arrayResult = [
+    'a' => 1,
+    'b' => [
+        'c' => 2,
+        'cc' => 22
+    ]
+];
+
 ```
 
 Access array with path notation

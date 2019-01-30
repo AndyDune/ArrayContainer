@@ -17,6 +17,7 @@ use AndyDune\ArrayContainer\Action\ArrayShift;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\Action\KeysToLower;
+use AndyDune\ArrayContainer\Action\SetValueIntoNestedArray;
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
 
@@ -139,6 +140,47 @@ class ArrayContainerTest extends TestCase
         $this->assertArrayHasKey(50, $arrayInContainer);
         $this->assertArrayHasKey(60, $arrayInContainer);
     }
+
+    public function testActionSetValueIntoNestedArray()
+    {
+        $array = [
+            'a' => 1,
+            'b' => [
+                'c' => 2
+            ]
+        ];
+        $container = new ArrayContainer($array);
+        $array['a1'] = 3;
+        $container->setAction(new SetValueIntoNestedArray(3))->executeAction('a1');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $array['a2'] = ['a2' => 12];
+        $container->setAction(new SetValueIntoNestedArray(12))->executeAction('a2', 'a2');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $array['a'] = 10;
+        $container->setAction(new SetValueIntoNestedArray(10))->executeAction('a');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $array['b']['cc'] = 22;
+        $container->setAction(new SetValueIntoNestedArray(22))->executeAction('b', 'cc');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $array['b']['ccc'] = ['cccc' => 23];
+        $container->setAction(new SetValueIntoNestedArray(23))->executeAction('b', 'ccc', 'cccc');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $this->assertEquals(2, $container->getArrayCopy()['b']['c']);
+
+
+        $array['b']['c'] = ['r' => 23];
+        $container->setAction(new SetValueIntoNestedArray(23))->executeAction('b', 'c', 'r');
+        $this->assertEquals($array, $container->getArrayCopy());
+
+        $this->assertEquals(['r' => 23], $container->getArrayCopy()['b']['c']);
+
+    }
+
 
 
 }

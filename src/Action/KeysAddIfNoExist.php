@@ -25,13 +25,15 @@ class KeysAddIfNoExist extends AbstractAction
 
     public function execute(...$params)
     {
+        $count = 0;
         $param1 = $params[0] ?? [];
         if (is_array($param1)) {
             $params = $param1;
         }
         $container = $this->arrayContainer;
-        array_walk($params, function ($value, $key) use ($container) {
+        array_walk($params, function ($value, $key) use ($container, &$count) {
             if (!$container->has($value)) {
+                $count++;
                 $container->set($value, $this->value);
             }
         });

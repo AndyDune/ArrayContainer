@@ -189,6 +189,53 @@ $arrayResult = [
 
 ```
 
+### Remove from array duplicated values
+
+It needs simple to remove values witch duplicates. Here how we can do it.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\RemoveDuplicates;
+
+$array = [
+    'a' => 'a',
+    'b' => 'b',
+    'b1' => 'b',
+    'c' => 'c',
+];
+$container = new ArrayContainer($array);
+$count = $container->setAction(new RemoveDuplicates())->executeAction();
+$count == 1; // it is count of removed items
+$array = $container->getArrayCopy());
+
+$array; // it has no value with key b1
+
+``` 
+
+
+### Create new array with values from current array
+
+It needs to create new list of values from any fixed list. The new list must contain random values.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\ExtractRandomItems;
+
+$array = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f'
+];
+$container = new ArrayContainer($array);
+$arrayNew = $container->setAction(new ExtractRandomItems(3))->executeAction();
+``` 
+
+It leaves keys in new array as it was in source array.
+
+
 Access array with path notation
 ------------
 

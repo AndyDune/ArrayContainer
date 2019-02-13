@@ -14,9 +14,11 @@
 namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\Action\ArrayShift;
+use AndyDune\ArrayContainer\Action\ExtractRandomItems;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\Action\KeysToLower;
+use AndyDune\ArrayContainer\Action\RemoveDuplicates;
 use AndyDune\ArrayContainer\Action\SetValueIntoNestedArray;
 use AndyDune\ArrayContainer\ArrayContainer;
 use PHPUnit\Framework\TestCase;
@@ -178,6 +180,60 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals($array, $container->getArrayCopy());
 
         $this->assertEquals(['r' => 23], $container->getArrayCopy()['b']['c']);
+
+    }
+
+    public function testRemoveDuplicates()
+    {
+        $array = [
+            'a' => 'a',
+            'b' => 'b',
+            'b1' => 'b',
+            'c' => 'c',
+            'd' => 'd',
+            'e' => 'e',
+            'f' => 'f',
+        ];
+        $container = new ArrayContainer($array);
+        $count = $container->setAction(new RemoveDuplicates())->executeAction();
+        $this->assertEquals(1, $count);
+        $this->assertFalse(array_key_exists('b1', $container->getArrayCopy()));
+
+    }
+
+    public function testExtractRandomItems()
+    {
+        $array = [
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f'
+        ];
+        $container = new ArrayContainer($array);
+        $array1 = $container->setAction(new ExtractRandomItems(3))->executeAction();
+        $containerResult = new ArrayContainer($array1);
+        $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
+        $array2 = $container->setAction(new ExtractRandomItems(3))->executeAction();
+        $containerResult = new ArrayContainer($array2);
+        $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
+
+        $this->assertCount(3, $array1);
+        $this->assertCount(3, $array2);
+
+        $array1 = $container->setAction(new ExtractRandomItems(3, true))->executeAction();
+        $containerResult = new ArrayContainer($array1);
+        $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
+        $this->assertCount(3, $array1);
+        $this->assertEquals('a', $array1[0]);
+
+        $array1 = $container->setAction(new ExtractRandomItems(3, true))->executeAction();
+        $containerResult = new ArrayContainer($array1);
+        $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
+        $this->assertCount(3, $array1);
+        $this->assertEquals('a', $array1[0]);
+
 
     }
 

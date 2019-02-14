@@ -15,6 +15,7 @@ namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\Action\ArrayShift;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
+use AndyDune\ArrayContainer\Action\InNestedArray;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\Action\KeysToLower;
@@ -233,7 +234,45 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
         $this->assertCount(3, $array1);
         $this->assertEquals('a', $array1[0]);
+    }
 
+    public function testInNestedArray()
+    {
+        $array = [
+            'a' => 1,
+            'b' => [
+                'c' => 2
+            ]
+        ];
+        $container = new ArrayContainer($array);
+        $this->assertTrue($container->setAction(new InNestedArray(1))->executeAction());
+        $this->assertTrue($container->setAction(new InNestedArray('1'))->executeAction());
+        $this->assertTrue($container->setAction(new InNestedArray(2))->executeAction());
+        $this->assertFalse($container->setAction(new InNestedArray(5))->executeAction());
+
+        $this->assertFalse($container->setAction(new InNestedArray('1', true))->executeAction());
+
+
+        $array = [
+            [
+                [
+                    'name' => 'Ivan'
+                ],
+                [
+                    'name' => 'Andrey'
+                ],
+            ]
+        ];
+        $container = new ArrayContainer($array);
+        $this->assertTrue($container->setAction(new InNestedArray('Ivan'))->executeAction());
+        $this->assertFalse($container->setAction(new InNestedArray('ivan'))->executeAction());
+
+        $this->assertTrue($container->setAction((new InNestedArray('ivan'))->setValueMutator(function($value){
+            if (!is_string($value)) {
+                return $value;
+            }
+            return strtolower($value);
+        }))->executeAction());
 
     }
 

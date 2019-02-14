@@ -209,8 +209,58 @@ $count == 1; // it is count of removed items
 $array = $container->getArrayCopy());
 
 $array; // it has no value with key b1
-
 ``` 
+
+### Check is value in nested array
+
+There is nested value with any structure. We need ti check is some value in given array including values in nested  arrays.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\InNestedArray;
+
+$array = [
+    'a' => 1,
+    'b' => [
+        'c' => 2
+    ]
+];
+$container = new ArrayContainer($array);
+$container->setAction(new InNestedArray(1))->executeAction(); // true
+$container->setAction(new InNestedArray('1'))->executeAction(); // true
+$container->setAction(new InNestedArray(5))->executeAction(); // false
+
+// With strong type comparision
+$container->setAction(new InNestedArray('1', true))->executeAction(); // false
+```
+
+Values can be changed before comparision:
+
+```php
+$array = [
+    [
+        [
+            'name' => 'Ivan'
+        ],
+        [
+            'name' => 'Andrey'
+        ],
+    ]
+];
+$container = new ArrayContainer($array);
+
+// false: Ivan != ivan
+$container->setAction(new InNestedArray('ivan'))->executeAction(); 
+
+// true: strtolower to values before compare
+$container->setAction((new InNestedArray('ivan'))->setValueMutator(function($value){
+    if (!is_string($value)) {
+        return $value;
+    }
+    return strtolower($value);
+}))->executeAction();
+
+```
 
 
 ### Create new array with values from current array

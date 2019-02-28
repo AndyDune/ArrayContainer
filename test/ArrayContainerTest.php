@@ -234,6 +234,16 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals(0, $containerResult->setAction(new RemoveDuplicates())->executeAction());
         $this->assertCount(3, $array1);
         $this->assertEquals('a', $array1[0]);
+
+        // Create a new array with more elements then source array
+        $array = [
+            'a',
+            'b',
+        ];
+        $container = new ArrayContainer($array);
+        $array1 = $container->setAction(new ExtractRandomItems(6))->executeAction();
+        $this->assertCount(2, $array1);
+
     }
 
     public function testInNestedArray()

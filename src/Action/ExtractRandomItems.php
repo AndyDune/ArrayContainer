@@ -19,11 +19,13 @@ class ExtractRandomItems extends AbstractAction
 {
     private $count = null;
     private $firstElementRequire = null;
+    private $lastElementRequire = null;
 
-    public function __construct($count = 1, $firstElementRequire = false)
+    public function __construct($count = 1, $firstElementRequire = false, $lastElementRequire = false)
     {
         $this->count = $count;
         $this->firstElementRequire = $firstElementRequire;
+        $this->lastElementRequire = $lastElementRequire;
     }
 
     public function execute(...$params)
@@ -35,18 +37,23 @@ class ExtractRandomItems extends AbstractAction
 
         $arrayResult = [];
 
+        $count = $this->count;
+
         if ($this->firstElementRequire) {
-            $this->count--;
+            $count--;
             $key = key($array);
             $arrayResult[$key] = current($array);
             unset($array[$key]);
         }
 
-        if (!$array or !$this->count) {
+        if (!$array or !$count) {
             return $arrayResult;
         }
 
-        for ($rest = $this->count; $rest > 0; $rest--) {
+        for ($rest = $count; $rest > 0; $rest--) {
+            if (!$array) {
+                break;
+            }
             $keys = array_keys($array);
             $keyNumber = rand(0, count($keys) - 1);
             $key = $keys[$keyNumber];

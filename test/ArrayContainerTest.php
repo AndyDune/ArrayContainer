@@ -14,6 +14,7 @@
 namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\Action\ArrayShift;
+use AndyDune\ArrayContainer\Action\Concat;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
 use AndyDune\ArrayContainer\Action\InNestedArray;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
@@ -138,7 +139,7 @@ class ArrayContainerTest extends TestCase
         $result = $container->setAction(new ArrayShift())->executeAction();
         $this->assertEquals([40 => 'fourty'], $result);
 
-        $arrayInContainer =  $container->getArrayCopy();
+        $arrayInContainer = $container->getArrayCopy();
         $this->assertCount(2, $arrayInContainer);
         $this->assertArrayHasKey(50, $arrayInContainer);
         $this->assertArrayHasKey(60, $arrayInContainer);
@@ -277,7 +278,7 @@ class ArrayContainerTest extends TestCase
         $this->assertTrue($container->setAction(new InNestedArray('Ivan'))->executeAction());
         $this->assertFalse($container->setAction(new InNestedArray('ivan'))->executeAction());
 
-        $this->assertTrue($container->setAction((new InNestedArray('ivan'))->setValueMutator(function($value){
+        $this->assertTrue($container->setAction((new InNestedArray('ivan'))->setValueMutator(function ($value) {
             if (!is_string($value)) {
                 return $value;
             }
@@ -286,6 +287,37 @@ class ArrayContainerTest extends TestCase
 
     }
 
+    public function testConcatArray()
+    {
+        $array = [
+            1,
+            'two' => 2,
+            3,
+        ];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new Concat())->executeAction([0 => 11, 'two' => 22]);
+        $this->assertEquals([1, 'two' => 2, 3, 11, 22], $result);
+
+
+        $array = [
+            1,
+            'two' => 2,
+            3,
+        ];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new Concat())->executeAction([0 => 11, 'two' => 22], ['two' => 222]);
+        $this->assertEquals([1, 'two' => 2, 3, 11, 22, 222], $result);
+
+        $array = [
+            1,
+            'two' => 2,
+            3,
+        ];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new Concat())->executeAction([0 => 11, 'two' => 22], 222);
+        $this->assertEquals([1, 'two' => 2, 3, 11, 22, 222], $result);
+
+    }
 
 
 }

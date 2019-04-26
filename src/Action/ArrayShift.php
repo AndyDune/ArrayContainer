@@ -1,12 +1,10 @@
 <?php
 /**
- * ----------------------------------------------
- * | Author: Andrey Ryzhov (Dune) <info@rznw.ru> |
- * | Site: www.rznw.ru                           |
- * | Phone: +7 (4912) 51-10-23                   |
- * | Date: 20.04.2018                            |
- * -----------------------------------------------
- *
+ * @package andydune/array-container
+ * @link  https://github.com/AndyDune/ArrayContainer for the canonical source repository
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @author Andrey Ryzhov  <info@rznw.ru>
+ * @copyright 2019 Andrey Ryzhov
  */
 
 

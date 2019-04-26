@@ -285,6 +285,35 @@ $arrayNew = $container->setAction(new ExtractRandomItems(3))->executeAction();
 
 It leaves keys in new array as it was in source array.
 
+### Concat arrays
+
+Function `array_merge` may act not right with associative arrays.
+
+Example down next:
+
+```php
+$a1 = ['first' => 1, 'second' => 2];
+$ar = array_merge($a1, ['second' => 22])
+
+The result is:
+$ar == ['first' => 1, 'second' => 22];
+```
+
+Concat action helps to do it right:
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\Concat;
+
+$a1 = ['first' => 1, 'second' => 2];
+
+$container = new ArrayContainer($a1);
+$result = $container->setAction(new Concat())->executeAction(['second' => 22]);
+
+The result is:
+$ar == ['first' => 1, 'second' => 2, 22];
+```
+
 
 Access array with path notation
 ------------

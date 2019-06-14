@@ -314,6 +314,65 @@ The result is:
 $ar == ['first' => 1, 'second' => 2, 22];
 ```
 
+### Computes the difference of arrays with additional index check
+
+Compares array1 against array2 and more and returns the difference. It computes arrays recursively.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\ComputeDifferenceOfArrays;
+
+$arrayWait = [
+    'r' => 'red',
+    'rr' => [
+        'r1' => 'red1',
+        'rrr' => [
+            'r2' => 'red2',
+            'r22' => ['red22']
+        ],
+        'r2' => 'red2',
+    ],
+    'b' => 'blue'
+];
+
+$container = new ArrayContainer($array);
+$result = $container->setAction(new ComputeDifferenceOfArrays())->executeAction(
+    ['r' => 'red', 'rr' => ['r1' => 'red1', 'rrr' => ['r22' => ['red22']]]]
+);
+
+// The resu is:
+
+$arrayWait = [
+    'rr' => [
+        'rrr' => [
+            'r2' => 'red2',
+            'r22' => ['red22']
+        ],
+        'r2' => 'red2',
+    ],
+    'b' => 'blue'
+];
+```
+
+It may ignore some keys within result.
+```php
+$container = new ArrayContainer($array);
+$result = $container->setAction(
+(new ComputeDifferenceOfArrays())->ignoreKeys('r2', ['b'])))->executeAction(
+    ['r' => 'red', 'rr' => ['r1' => 'red1']]
+);
+
+// The resu is:
+
+$arrayWait = [
+    'rr' => [
+        'rrr' => [
+            'r22' => ['red22']
+        ],
+    ]
+];
+
+``` 
 
 Access array with path notation
 ------------

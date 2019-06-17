@@ -374,6 +374,31 @@ $arrayWait = [
 
 ``` 
 
+### Check is array has only fixed keys
+
+It checks source array if it has only this keys.
+
+```php
+$array = [
+    'r' => 'red',
+    'rr' => [
+        'r1' => 'red1',
+    ],
+    'b' => 'blue'
+];
+$container = new ArrayContainer($array);
+$result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r');
+$result == false;
+
+$container = new ArrayContainer($array);
+$result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r', ['rr']);
+$result == false;
+
+$container = new ArrayContainer($array);
+$result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r', ['rr', 'b']);
+$result == true;
+```
+
 Access array with path notation
 ------------
 

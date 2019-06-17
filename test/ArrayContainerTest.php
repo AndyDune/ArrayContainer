@@ -18,6 +18,7 @@ use AndyDune\ArrayContainer\Action\ComputeDifferenceOfArrays;
 use AndyDune\ArrayContainer\Action\Concat;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
 use AndyDune\ArrayContainer\Action\InNestedArray;
+use AndyDune\ArrayContainer\Action\IsOnlyThisKeysInArray;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
 use AndyDune\ArrayContainer\Action\KeysLeave;
 use AndyDune\ArrayContainer\Action\KeysToLower;
@@ -465,6 +466,37 @@ class ArrayContainerTest extends TestCase
             ['rr' => ['rrr' => ['r22' => ['red22']]]]
         );
         $this->assertEquals($arrayWait, $result);
+
+    }
+
+    /**
+     * @covers \AndyDune\ArrayContainer\Action\IsOnlyThisKeysInArray::execute
+     */
+    public function testIsOnlyThisKeysInArray()
+    {
+        $array = [
+            'r' => 'red',
+            'rr' => [
+                'r1' => 'red1',
+                'rrr' => [
+                    'r2' => 'red2',
+                    'r22' => ['red22']
+                ],
+                'r2' => 'red2',
+            ],
+            'b' => 'blue'
+        ];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r');
+        $this->assertFalse($result);
+
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r', ['rr']);
+        $this->assertFalse($result);
+
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r', ['rr', 'b']);
+        $this->assertTrue($result);
 
     }
 

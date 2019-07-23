@@ -399,6 +399,23 @@ $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r',
 $result == true;
 ```
 
+### Create inger array with values not in sequence
+
+There is an array with integer values we have. Values are mixed, not in order and can be duplicated. 
+We can receive array with values witch were skipped.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\GetIntegerNumbersNotInSequence;
+
+$array = [5, 1, 7, 8];
+$container = new ArrayContainer($array);
+$result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+// result is:
+[2,3,4,6] == $result;
+```   
+
+
 Access array with path notation
 ------------
 

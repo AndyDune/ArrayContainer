@@ -17,6 +17,7 @@ use AndyDune\ArrayContainer\Action\ArrayShift;
 use AndyDune\ArrayContainer\Action\ComputeDifferenceOfArrays;
 use AndyDune\ArrayContainer\Action\Concat;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
+use AndyDune\ArrayContainer\Action\GetIntegerNumbersNotInSequence;
 use AndyDune\ArrayContainer\Action\InNestedArray;
 use AndyDune\ArrayContainer\Action\IsOnlyThisKeysInArray;
 use AndyDune\ArrayContainer\Action\KeysAddIfNoExist;
@@ -497,6 +498,35 @@ class ArrayContainerTest extends TestCase
         $container = new ArrayContainer($array);
         $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r', ['rr', 'b']);
         $this->assertTrue($result);
+
+    }
+
+    public function testGetIntegerNumbersNotInSequence()
+    {
+        $array = [1, 5];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+        $this->assertEquals([2,3,4], $result);
+
+        $array = [5, 1];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+        $this->assertEquals([2,3,4], $result);
+
+        $array = [5, 1, 7, 8];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+        $this->assertEquals([2,3,4,6], $result);
+
+        $array = [5, 1, 7, 8, 8, 5, 0];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+        $this->assertEquals([2,3,4,6], $result);
+
+        $array = ['', '2'];
+        $container = new ArrayContainer($array);
+        $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
+        $this->assertEquals([1], $result);
 
     }
 

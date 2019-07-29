@@ -399,7 +399,7 @@ $result = $container->setAction(new IsOnlyThisKeysInArray())->executeAction('r',
 $result == true;
 ```
 
-### Create inger array with values not in sequence
+### Create integer array with values not in sequence
 
 There is an array with integer values we have. Values are mixed, not in order and can be duplicated. 
 We can receive array with values witch were skipped.
@@ -413,6 +413,21 @@ $container = new ArrayContainer($array);
 $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
 // result is:
 [2,3,4,6] == $result;
+```   
+
+### Find max float value in array
+
+It searches max float value in the given array. Each value is prepared by removing spaces.
+
+```php
+use AndyDune\ArrayContainer\ArrayContainer;
+use AndyDune\ArrayContainer\Action\FindMaxFloatValue;
+
+$container = new ArrayContainer(['- 1', -2.56, 10, ' 1 1 ']);
+$result = $container->setAction(new FindMaxFloatValue())->executeAction();
+$this->assertEquals(11, $result);
+// result is:
+11 == $result;
 ```   
 
 

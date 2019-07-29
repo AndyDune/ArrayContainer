@@ -17,6 +17,7 @@ use AndyDune\ArrayContainer\Action\ArrayShift;
 use AndyDune\ArrayContainer\Action\ComputeDifferenceOfArrays;
 use AndyDune\ArrayContainer\Action\Concat;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
+use AndyDune\ArrayContainer\Action\FindMaxFloatValue;
 use AndyDune\ArrayContainer\Action\GetIntegerNumbersNotInSequence;
 use AndyDune\ArrayContainer\Action\InNestedArray;
 use AndyDune\ArrayContainer\Action\IsOnlyThisKeysInArray;
@@ -527,7 +528,35 @@ class ArrayContainerTest extends TestCase
         $container = new ArrayContainer($array);
         $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
         $this->assertEquals([1], $result);
+    }
 
+    /**
+     * @covers FindMaxFloatValue
+     */
+    public function testFindMaxFloatValue()
+    {
+        $container = new ArrayContainer();
+        $result = $container->setAction(new FindMaxFloatValue())->executeAction();
+        $this->assertEquals(null, $result);
+
+        $container = new ArrayContainer([0, 'string']);
+        $result = $container->setAction(new FindMaxFloatValue())->executeAction();
+        $this->assertEquals(0, $result);
+
+
+        $container = new ArrayContainer(['', '-1']);
+        $result = $container->setAction(new FindMaxFloatValue())->executeAction();
+        $this->assertEquals(0, $result);
+
+        // it removes spaces
+        $container = new ArrayContainer(['- 1', -2.56]);
+        $result = $container->setAction(new FindMaxFloatValue())->executeAction();
+        $this->assertEquals(-1, $result);
+
+
+$container = new ArrayContainer(['- 1', -2.56, 10, ' 1 1 ']);
+$result = $container->setAction(new FindMaxFloatValue())->executeAction();
+$this->assertEquals(11, $result);
     }
 
 }

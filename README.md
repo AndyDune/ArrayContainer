@@ -464,3 +464,35 @@ $arr->key2->key21->key211 = 'bum';
 $arr->key2->key21->noExist_id->getValue(); // null
 
 ```
+
+
+Build array
+------------
+
+## MultilineTextToAssociatedArray
+
+It creates array from text with lines as key-values pairs in it.
+
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToAssociatedArray;
+
+$sourceText = '
+one => two
+three
+=> four
+
+';
+
+$expectResult = [
+    'one' => 'two',
+    'four',
+    'three' => null
+];
+
+$builder = new Builder($sourceText, new MultilineTextToAssociatedArray('=>'));
+
+// 
+$expectResult == $builder->execute();
+
+```  

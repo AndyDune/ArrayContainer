@@ -492,7 +492,36 @@ $expectResult = [
 
 $builder = new Builder($sourceText, new MultilineTextToAssociatedArray('=>'));
 
-// 
+// result is
 $expectResult == $builder->execute();
 
 ```  
+
+## MultilineTextAsJsonToAssociatedArray
+
+It creates array from text with lines as json-like key-values pairs in it.
+
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
+
+$text = '
+{
+"one":"two",
+"two" : 2,
+"three":null
+}
+
+';
+
+$expectResult = [
+    'one' => 'two',
+    'two' => 2,
+    'three' => null
+];
+
+$builder = new Builder($text, new MultilineTextAsJsonToAssociatedArray());
+// result is
+
+$expectResult ==  $builder->execute();
+```

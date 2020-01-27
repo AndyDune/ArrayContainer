@@ -14,6 +14,7 @@ namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\ArrayContainer;
 use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToAssociatedArray;
 use PHPUnit\Framework\TestCase;
 
@@ -39,5 +40,30 @@ class BuilderTest extends TestCase
 
         $builder = new Builder($text, new MultilineTextToAssociatedArray('=>'));
         $this->assertEquals($expectResult, $builder->execute());
+    }
+
+    public function testMultilineTextAsJsonToAssociatedArray()
+    {
+        $text = '
+        {
+        "one":"two",
+        "two" : 2,
+        "three":null
+        }
+        
+        ';
+
+        $expectResult = [
+            'one' => 'two',
+            'two' => 2,
+            'three' => null
+        ];
+
+        $json = json_encode($expectResult, JSON_UNESCAPED_UNICODE);
+
+        $builder = new Builder($text, new MultilineTextAsJsonToAssociatedArray());
+        $this->assertEquals($expectResult, $builder->execute());
+
+
     }
 }

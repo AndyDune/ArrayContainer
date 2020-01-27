@@ -13,33 +13,16 @@
 namespace AndyDune\ArrayContainer\BuilderStrategy;
 
 
+use AndyDune\ArrayContainer\BuilderStrategy\Tool\MultilineTextExecuteTrait;
+
 class MultilineTextToAssociatedArray extends StrategyAbstract
 {
-    private $keyValueSeparator;
-
-    private $array = [];
+    use MultilineTextExecuteTrait;
+    protected $keyValueSeparator;
 
     public function __construct($keyValueSeparator = '>')
     {
         $this->keyValueSeparator = $keyValueSeparator;
-    }
-
-    public function execute(): array
-    {
-        $this->array = [];
-        $text = trim($this->builder->getSource());
-        $lineSeparator = "\r\n";
-        if (!preg_match('|' . $lineSeparator . '|ui', $text)) {
-            $lineSeparator = "\n";
-        }
-        foreach (explode($lineSeparator, $text) as $line) {
-            $line = trim($line);
-            if (!$line) {
-                continue;
-            }
-            $this->explodeLine($line);
-        }
-        return $this->array;
     }
 
     protected function explodeLine($line)

@@ -32,11 +32,17 @@ trait MultilineTextExecuteTrait
             }
             $this->explodeLine($line);
         }
-        return $this->array;
+        return $this->checkResultArray($this->array);
     }
 
     protected function explodeLine($line)
     {
 
     }
+
+    protected function checkResultArray($array)
+    {
+        return $array;
+    }
+
 }

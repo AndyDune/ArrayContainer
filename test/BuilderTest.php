@@ -14,6 +14,7 @@ namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\ArrayContainer;
 use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MarkdownTableToArray;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToAssociatedArray;
 use PHPUnit\Framework\TestCase;
@@ -63,7 +64,35 @@ class BuilderTest extends TestCase
 
         $builder = new Builder($text, new MultilineTextAsJsonToAssociatedArray());
         $this->assertEquals($expectResult, $builder->execute());
+    }
 
+    public function testMarkdown()
+    {
+        $text = '
+        | one | two | 
+        | --- | ---
+        1 | 2
+        11
+        | 12| 13 | 14
+        ';
+
+        $expectResult = [
+            [
+                'one' => 1,
+                'two' => 2
+            ],
+            [
+                'one' => '11',
+                'two' => null
+            ],
+            [
+                'one' => '12',
+                'two' => '13'
+            ]
+        ];
+
+        $builder = new Builder($text, new MarkdownTableToArray());
+        $this->assertEquals($expectResult, $builder->execute());
 
     }
 }

@@ -525,3 +525,40 @@ $builder = new Builder($text, new MultilineTextAsJsonToAssociatedArray());
 
 $expectResult ==  $builder->execute();
 ```
+
+## MarkdownTableToArray
+
+It creates array from Markdown table.
+
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
+
+$text = '
+| one | two | 
+| --- | ---
+1 | 2
+11
+| 12| 13 | 14
+';
+
+$expectResult = [
+    [
+        'one' => 1,
+        'two' => 2
+    ],
+    [
+        'one' => '11',
+        'two' => null
+    ],
+    [
+        'one' => '12',
+        'two' => '13'
+    ]
+];
+
+$builder = new Builder($text, new MarkdownTableToArray());
+$expectResult == $builder->execute();
+
+
+```

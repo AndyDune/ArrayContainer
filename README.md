@@ -530,6 +530,8 @@ $expectResult ==  $builder->execute();
 
 It creates array from Markdown table.
 
+Read about format [here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#tables)
+
 ```php
 use AndyDune\ArrayContainer\Builder;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;

@@ -91,8 +91,40 @@ class BuilderTest extends TestCase
             ]
         ];
 
+
+        $text = '
+        | one | two | 
+         ||--
+        1 | 2
+        11
+        | 12| 13 | 14
+        ';
+
+        $expectResult = [
+            [
+                'one',
+                'two'
+            ],
+            [
+                '',
+                '--'
+            ],
+            [
+                '1',
+                '2'
+            ],
+            [
+                '11',
+                null
+            ],
+            [
+                '12',
+                '13'
+            ]
+        ];
+
+
         $builder = new Builder($text, new MarkdownTableToArray());
         $this->assertEquals($expectResult, $builder->execute());
-
     }
 }

@@ -561,6 +561,31 @@ $expectResult = [
 
 $builder = new Builder($text, new MarkdownTableToArray());
 $expectResult == $builder->execute();
+```
 
+You can build not assoc array like this:
 
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
+
+$text = '
+    | one | two | 
+    1 | 2
+    |
+    || 5
+    11
+    | 12| 13 | 14
+';
+
+$expectResult = [
+    ['one', 'two'],
+    [1, 2],
+    ['', 5],
+    ['11',  null],
+    ['12', '13']
+];
+
+$builder = new Builder($text, new MarkdownTableToArray());
+$expectResult == $builder->execute();
 ```

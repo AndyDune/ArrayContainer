@@ -95,6 +95,7 @@ class BuilderTest extends TestCase
         $text = '
         | one | two | 
          ||--
+         |
         1 | 2
         11
         | 12| 13 | 14
@@ -108,6 +109,10 @@ class BuilderTest extends TestCase
             [
                 '',
                 '--'
+            ],
+            [
+                '',
+                ''
             ],
             [
                 '1',

@@ -27,6 +27,7 @@ class BuilderTest extends TestCase
     public function testMultilineTextToAssociatedArray()
     {
         $text = '
+        one => one
         one => two
         three
         => four
@@ -40,6 +41,16 @@ class BuilderTest extends TestCase
         ];
 
         $builder = new Builder($text, new MultilineTextToAssociatedArray('=>'));
+        $this->assertEquals($expectResult, $builder->execute());
+
+        $expectResult = [
+            'one' => ['one', 'two'],
+            'four',
+            'three' => null
+        ];
+
+        $builder = new Builder($text, (new MultilineTextToAssociatedArray('=>'))
+            ->setHandleMatchingKeys(true));
         $this->assertEquals($expectResult, $builder->execute());
     }
 

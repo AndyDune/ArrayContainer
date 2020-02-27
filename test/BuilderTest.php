@@ -17,6 +17,7 @@ use AndyDune\ArrayContainer\Builder;
 use AndyDune\ArrayContainer\BuilderStrategy\MarkdownTableToArray;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextAsJsonToAssociatedArray;
 use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToAssociatedArray;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToNestedAssociatedArray;
 use PHPUnit\Framework\TestCase;
 
 class BuilderTest extends TestCase
@@ -142,5 +143,26 @@ class BuilderTest extends TestCase
 
         $builder = new Builder($text, new MarkdownTableToArray());
         $this->assertEquals($expectResult, $builder->execute());
+    }
+
+    public function testMultilineTextToNestedAssociatedArray()
+    {
+        $text = '
+        one > one,
+        one > two, one
+        three
+        > four
+        four >         
+        four > 4, 5     , 6
+        ';
+
+        $expectResult = [
+            'one' => ['one', 'two'],
+            'four' => [4, 5, 6],
+        ];
+
+        $builder = new Builder($text, new MultilineTextToNestedAssociatedArray());
+        $this->assertEquals($expectResult, $builder->execute());
+
     }
 }

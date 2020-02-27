@@ -18,12 +18,29 @@ class ArraysAccumulator
 {
     protected $data = [];
 
+    protected $unique = false;
+
+    protected $notEmpty = false;
 
     public function add($key, $value)
     {
         if (!array_key_exists($key, $this->data)) {
             $this->data[$key] = [];
         }
+
+        if ($this->notEmpty and !(is_array($value) or is_object($value))) {
+            $value = trim($value);
+            if (!$value) {
+                return $this;
+            }
+        }
+
+        if ($this->unique) {
+            if (in_array($value, $this->data[$key])) {
+                return $this;
+            }
+        }
+
         $this->data[$key][] = $value;
         return $this;
     }
@@ -42,6 +59,26 @@ class ArraysAccumulator
     public function getArrayCopy()
     {
         return $this->data;
+    }
+
+    /**
+     * @param bool $unique
+     * @return $this
+     */
+    public function setUnique(bool $unique): self
+    {
+        $this->unique = $unique;
+        return $this;
+    }
+
+    /**
+     * @param bool $notEmpty
+     * @return $this
+     */
+    public function setNotEmpty(bool $notEmpty): self
+    {
+        $this->notEmpty = $notEmpty;
+        return $this;
     }
 
 }

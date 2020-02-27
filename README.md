@@ -589,3 +589,26 @@ $expectResult = [
 $builder = new Builder($text, new MarkdownTableToArray());
 $expectResult == $builder->execute();
 ```
+
+## MultilineTextToNestedAssociatedArray
+
+It creates array from text with lines as key-values pairs in it. Values are nested arrays.
+
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\MultilineTextToNestedAssociatedArray;
+
+$text = '
+one > one, 
+one > two, one
+four > 4, 5, 6
+';
+
+$expectResult = [
+    'one' => ['one', 'two'],
+    'four' => [4, 5, 6],
+];
+
+$builder = new Builder($text, new MultilineTextToNestedAssociatedArray());
+$expectResult == $builder->execute();
+```

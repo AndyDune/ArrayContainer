@@ -612,3 +612,24 @@ $expectResult = [
 $builder = new Builder($text, new MultilineTextToNestedAssociatedArray());
 $expectResult == $builder->execute();
 ```
+
+
+## StringExplode
+
+It does simple string explode procedure with removing empty values or not.
+
+```php
+use AndyDune\ArrayContainer\Builder;
+use AndyDune\ArrayContainer\BuilderStrategy\StringExplode;
+
+$text = '
+    one , two,
+';
+
+$expectResult = [
+    'one', 'two'
+];
+
+$builder = new Builder($text, new StringExplode(','));
+$expectResult == $builder->execute();
+```

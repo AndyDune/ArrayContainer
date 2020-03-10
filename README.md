@@ -213,7 +213,7 @@ $array; // it has no value with key b1
 
 ### Check is value in nested array
 
-There is nested value with any structure. We need ti check is some value in given array including values in nested  arrays.
+There is nested value with any structure. It checks is some value in given array including values in nested arrays.
 
 ```php
 use AndyDune\ArrayContainer\ArrayContainer;

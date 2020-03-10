@@ -14,6 +14,7 @@
 namespace AndyDuneTest\ArrayContainer;
 
 use AndyDune\ArrayContainer\Action\ArrayShift;
+use AndyDune\ArrayContainer\Action\BringToView;
 use AndyDune\ArrayContainer\Action\ComputeDifferenceOfArrays;
 use AndyDune\ArrayContainer\Action\Concat;
 use AndyDune\ArrayContainer\Action\ExtractRandomItems;
@@ -465,8 +466,8 @@ class ArrayContainerTest extends TestCase
         $container = new ArrayContainer($array);
         $result = $container->setAction((new ComputeDifferenceOfArrays())->ignoreKeys('r', ['b', 'r2']))
             ->executeAction(
-            ['rr' => ['rrr' => ['r22' => ['red22']]]]
-        );
+                ['rr' => ['rrr' => ['r22' => ['red22']]]]
+            );
         $this->assertEquals($arrayWait, $result);
 
     }
@@ -507,22 +508,22 @@ class ArrayContainerTest extends TestCase
         $array = [1, 5];
         $container = new ArrayContainer($array);
         $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
-        $this->assertEquals([2,3,4], $result);
+        $this->assertEquals([2, 3, 4], $result);
 
         $array = [5, 1];
         $container = new ArrayContainer($array);
         $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
-        $this->assertEquals([2,3,4], $result);
+        $this->assertEquals([2, 3, 4], $result);
 
         $array = [5, 1, 7, 8];
         $container = new ArrayContainer($array);
         $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
-        $this->assertEquals([2,3,4,6], $result);
+        $this->assertEquals([2, 3, 4, 6], $result);
 
         $array = [5, 1, 7, 8, 8, 5, 0];
         $container = new ArrayContainer($array);
         $result = $container->setAction(new GetIntegerNumbersNotInSequence())->executeAction();
-        $this->assertEquals([2,3,4,6], $result);
+        $this->assertEquals([2, 3, 4, 6], $result);
 
         $array = ['', '2'];
         $container = new ArrayContainer($array);
@@ -554,9 +555,58 @@ class ArrayContainerTest extends TestCase
         $this->assertEquals(-1, $result);
 
 
-$container = new ArrayContainer(['- 1', -2.56, 10, ' 1 1 ']);
-$result = $container->setAction(new FindMaxFloatValue())->executeAction();
-$this->assertEquals(11, $result);
+        $container = new ArrayContainer(['- 1', -2.56, 10, ' 1 1 ']);
+        $result = $container->setAction(new FindMaxFloatValue())->executeAction();
+        $this->assertEquals(11, $result);
+    }
+
+    public function testBringToView()
+    {
+        $container = new ArrayContainer();
+        $result = $container->setAction(new BringToView(['str' => 'str',
+            'int' => 'int',
+            'some' => 'some', 'arr' => []]))->executeAction();
+        $result = $container->getArrayCopy();
+        $this->assertEquals(['str' => '',
+            'int' => 0,
+            'some' => null, 'arr' => []], $result);
+
+        $source = [
+            'str' => ['one' => 1]
+        ];
+
+        $container = new ArrayContainer($source);
+        $result = $container->setAction(new BringToView(['str' => 'str',
+            'int' => 'int',
+            'some' => 'some', 'arr' => []]))->executeAction();
+        $result = $container->getArrayCopy();
+        $this->assertEquals(['str' => 'array',
+            'int' => 0,
+            'some' => null, 'arr' => []], $result);
+
+
+        $source = [
+            'str' => ['one' => 1],
+            'int' => ['one' => 1],
+            'arr' => ['nest' => 'ed'],
+            'do_not_touch' => ['yes']
+        ];
+
+        $container = new ArrayContainer($source);
+        $result = $container->setAction(new BringToView([
+            'str' => 'str',
+            'int' => 'int',
+            'some' => 'some', 'arr' => [
+                'n2' => ['s' => 'str']
+            ]]))->executeAction();
+        $result = $container->getArrayCopy();
+        $this->assertEquals([
+            'str' => 'array',
+            'int' => 1,
+            'some' => null,
+            'arr' => ['nest' => 'ed', 'n2' => ['s' => '']],
+            'do_not_touch' => ['yes']
+            ], $result);
     }
 
 }

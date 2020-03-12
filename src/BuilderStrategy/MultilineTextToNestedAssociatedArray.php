@@ -25,6 +25,8 @@ class MultilineTextToNestedAssociatedArray extends StrategyAbstract
 
     protected $arrayAccumulator;
 
+    protected $allowEmpty = true;
+
     public function __construct($keyValueSeparator = '>', $nestedArraySeparator = ',')
     {
         $this->nestedArraySeparator = $nestedArraySeparator;
@@ -40,15 +42,24 @@ class MultilineTextToNestedAssociatedArray extends StrategyAbstract
     protected function explodeLine($line)
     {
         $parts = explode($this->keyValueSeparator, $line);
-        if (count($parts) == 1) {
+        if (!$parts) {
             return;
         }
 
         $key = trim(array_shift($parts));
-        $value = trim(implode($this->keyValueSeparator, $parts));
+
         if (!$key) {
             return;
         }
+
+        if (!$parts) {
+            if ($this->allowEmpty) {
+                $this->arrayAccumulator->addKey($key);
+            }
+            return;
+        }
+
+        $value = trim(implode($this->keyValueSeparator, $parts));
 
         $parts = explode($this->nestedArraySeparator, $value);
         if (!$parts) {
@@ -60,6 +71,13 @@ class MultilineTextToNestedAssociatedArray extends StrategyAbstract
         }
     }
 
-
-
+    /**
+     * @param bool $allowEmpty
+     * @return $this
+     */
+    public function setAllowEmpty(bool $allowEmpty): self
+    {
+        $this->allowEmpty = $allowEmpty;
+        return $this;
+    }
 }

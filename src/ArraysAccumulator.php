@@ -24,15 +24,15 @@ class ArraysAccumulator
 
     public function add($key, $value)
     {
-        if (!array_key_exists($key, $this->data)) {
-            $this->data[$key] = [];
-        }
-
         if ($this->notEmpty and !(is_array($value) or is_object($value))) {
             $value = trim($value);
             if (!$value) {
                 return $this;
             }
+        }
+
+        if (!array_key_exists($key, $this->data)) {
+            $this->data[$key] = [];
         }
 
         if ($this->unique) {
@@ -42,6 +42,14 @@ class ArraysAccumulator
         }
 
         $this->data[$key][] = $value;
+        return $this;
+    }
+
+    public function addKey($key)
+    {
+        if (!array_key_exists($key, $this->data)) {
+            $this->data[$key] = [];
+        }
         return $this;
     }
 

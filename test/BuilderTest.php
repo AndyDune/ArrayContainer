@@ -160,9 +160,18 @@ class BuilderTest extends TestCase
         $expectResult = [
             'one' => ['one', 'two'],
             'four' => [4, 5, 6],
+            'three' => [],
         ];
 
         $builder = new Builder($text, new MultilineTextToNestedAssociatedArray());
+        $this->assertEquals($expectResult, $builder->execute());
+
+        $expectResult = [
+            'one' => ['one', 'two'],
+            'four' => [4, 5, 6],
+        ];
+
+        $builder = new Builder($text, (new MultilineTextToNestedAssociatedArray())->setAllowEmpty(false));
         $this->assertEquals($expectResult, $builder->execute());
     }
 

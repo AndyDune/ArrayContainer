@@ -62,7 +62,7 @@ $array['tobacco'] // value is 'NO'
 Filters
 ------------
 
-Filters is callable objects. Filters uses during request properties with getters.
+Filters are callable objects. Filters uses during request properties with getters.
 
 ```php
 use AndyDune\ArrayContainer\ArrayContainer;

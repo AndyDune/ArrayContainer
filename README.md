@@ -62,7 +62,7 @@ $array['tobacco'] // value is 'NO'
 Filters
 ------------
 
-Filters are callable objects. Filters uses during request properties with getters.
+Filters are callable objects. Filters are used during request properties with getters.
 
 ```php
 use AndyDune\ArrayContainer\ArrayContainer;
@@ -77,8 +77,8 @@ $array['pipe'] // value is 'HANDEMADE'
 Modifiers
 ------------
 
-Modifier is a object of class witch implements AndyDune\ArrayContainer\Action\AbstractAction interface. 
-It simple can be simple extented without modification main class. 
+Modifier is an object of class witch implements AndyDune\ArrayContainer\Action\AbstractAction interface. 
+It can be simple extented without modification main class. 
 
 ### Add keys to array if not exist.
 
@@ -90,7 +90,7 @@ $array = [
 ];
 ```
 
-You need to use it into model. Model wait array with keys: *type*, *key* and *value* 
+You need to use it inside model. Model waits array with keys: *type*, *key* and *value* 
 
 ```php
 use AndyDune\ArrayContainer\ArrayContainer;
@@ -114,7 +114,7 @@ $resultArray = [
 
 ### Array shift maintaining key to data correlations.
 
-There is source array with numeric keys.
+It is source array with numeric keys.
 ```php
 $arraySource = [
     40 => 'fourty',

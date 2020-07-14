@@ -189,6 +189,50 @@ $arrayResult = [
 
 ```
 
+Ome more example. 
+
+We have stait array with month, year and counts of entities within this date.
+```
+$data = [[
+    'month' => 7,
+    'year' => 2020,
+    'orderCount' => 2,
+    ],
+],
+[
+    'month' => 1,
+    'year' => 2020,
+    'orderCount' => 20,
+    ],
+],
+
+...
+]
+```
+We need to recieve something like this:
+```
+$result = [
+    2007 => [
+        1 => 2,
+        7 => 20
+    ]
+]
+```
+
+Here is code for this:
+```
+use AndyDune\ArrayContainer\Action\SetValueIntoNestedArray;
+use AndyDune\ArrayContainer\ArrayContainer;
+
+$arrayContainer = new ArrayContainer();
+foreach($data as $row) {
+    $arrayContainer->setAction(new SetValueIntoNestedArray($row['orderCount']))
+        ->executeAction($row['year'], $row['month']);
+}
+$result = $arrayContainer->getArrayCopy();
+```
+
+
 ### Remove from array duplicated values
 
 It needs simple to remove values witch duplicates. Here how we can do it.

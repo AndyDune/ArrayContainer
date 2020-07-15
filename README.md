@@ -192,7 +192,7 @@ $arrayResult = [
 Ome more example. 
 
 We have stait array with month, year and counts of entities within this date.
-```
+```php
 $data = [[
     'month' => 7,
     'year' => 2020,
@@ -210,7 +210,7 @@ $data = [[
 ]
 ```
 We need to recieve something like this:
-```
+```php
 $result = [
     2007 => [
         1 => 2,
@@ -220,7 +220,7 @@ $result = [
 ```
 
 Here is code for this:
-```
+```php
 use AndyDune\ArrayContainer\Action\SetValueIntoNestedArray;
 use AndyDune\ArrayContainer\ArrayContainer;
 
